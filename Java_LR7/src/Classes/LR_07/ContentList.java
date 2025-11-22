@@ -81,14 +81,6 @@ public class ContentList extends JPanel {
         // Информация об объекте
         JLabel titleLabel = new JLabel((index + 1) + ". " + content.getTitle());
         titleLabel.setFont(new Font("Arial", Font.BOLD, 14));
-//
-//        JLabel infoLabel = new JLabel(String.format(
-//                "Рейтинг: %d/5 | Элементов: %d | Тип: %s",
-//                content.getRating(),
-//                content.length(),
-//                content.getClass().getSimpleName()
-//        ));
-//        infoLabel.setFont(new Font("Arial", Font.PLAIN, 12));
 
         JPanel infoPanel = new JPanel(new BorderLayout());
         infoPanel.add(titleLabel, BorderLayout.NORTH);

@@ -37,9 +37,8 @@ public class ContentDetailsDialog extends JDialog {
 
         // Детальный вывод массива
         sb.append("\nЭлементы массива:\n");
-        int[] array = content.getArray();
-        if (array != null && array.length > 0) {
-            sb.append(java.util.Arrays.toString(array));
+        if (content.getArray() != null && content.length() > 0) {
+            sb.append(java.util.Arrays.toString(content.getArray()));
         } else {
             sb.append("  Массив пуст или null\n");
         }

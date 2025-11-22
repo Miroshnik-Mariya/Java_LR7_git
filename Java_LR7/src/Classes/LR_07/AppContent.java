@@ -8,7 +8,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
 import Classes.BooksSeries;
 import Classes.Helper;
 import Classes.LR_07.ContentDetailsDialog;
@@ -57,13 +56,11 @@ public class AppContent extends JFrame {
 
         // Добавляем основные пункты в меню
         fileMenu.add(autoFillItem);
-        fileMenu.addSeparator();
         fileMenu.add(createTxtItem);
         fileMenu.add(createBinItem);
         fileMenu.add(createSerItem);
         fileMenu.add(createCsvItem);
         fileMenu.add(createAllItem);
-        fileMenu.addSeparator();
         fileMenu.add(loadItem);
 
         // СОЗДАЕМ РАДИОКНОПКИ ДЛЯ PLaF
@@ -227,7 +224,6 @@ public class AppContent extends JFrame {
     private void createTextSample(List<Content> data, File file) throws IOException {
         try (FileOutputStream fos = new FileOutputStream(file);
              OutputStreamWriter writer = new OutputStreamWriter(fos, "UTF-8")) {
-
             for (Content content : data) {
                 Helper.writeContent(content, writer);
                 writer.write("\n");
@@ -237,10 +233,9 @@ public class AppContent extends JFrame {
 
     // Бинарный формат
     private void createBinarySample(List<Content> data, File file) throws IOException {
-        try (FileOutputStream fos = new FileOutputStream(file)) {  // ← ТОЛЬКО FileOutputStream
-
+        try (FileOutputStream fos = new FileOutputStream(file)) {
             for (Content content : data) {
-                Helper.outputContent(content, fos);  // ← Прямая запись в FileOutputStream
+                Helper.outputContent(content, fos);
             }
         }
     }
@@ -249,7 +244,6 @@ public class AppContent extends JFrame {
     private void createSerializedSample(List<Content> data, File file) throws IOException {
         try (FileOutputStream fos = new FileOutputStream(file);
              ObjectOutputStream oos = new ObjectOutputStream(fos)) {
-
             for (Content content : data) {
                 Helper.serializeContent(content, oos);
             }
@@ -278,10 +272,10 @@ public class AppContent extends JFrame {
     // ЗАГРУЗКА ИЗ ФАЙЛА
     private void loadFromFile() {
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Выберите файл для загрузки");
+        fileChooser.setDialogTitle("Выберите файл");
 
         int result = fileChooser.showOpenDialog(this);
-        if (result == JFileChooser.APPROVE_OPTION) {
+        if (result == JFileChooser.APPROVE_OPTION) { //файл выбран
             File selectedFile = fileChooser.getSelectedFile();
             try {
                 contentDatabase.clear();
@@ -291,7 +285,7 @@ public class AppContent extends JFrame {
 
                 JOptionPane.showMessageDialog(this,
                         "Успешно загружено " + loadedContent.size() + " объектов из файла: " + selectedFile.getName(),
-                        "Успех", JOptionPane.INFORMATION_MESSAGE);
+                        "Загружено", JOptionPane.INFORMATION_MESSAGE);
 
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this,
@@ -315,7 +309,7 @@ public class AppContent extends JFrame {
         } else if (fileName.endsWith(".csv")) {
             return loadCSVFormat(file);
         } else {
-            throw new IOException("Неподдерживаемый формат файла. Используйте: .bin, .txt, .ser, .csv");
+            throw new IOException("ОШибка: неподдерживаемый формат файла. Используйте: .bin, .txt, .ser, .csv");
         }
     }
 
@@ -361,10 +355,10 @@ public class AppContent extends JFrame {
     private List<Content> loadSerializedFormat(File file) throws IOException, ClassNotFoundException {
         List<Content> result = new ArrayList<>();
         try (FileInputStream fis = new FileInputStream(file)) {
-            try (ObjectInputStream ois = new ObjectInputStream(fis)) {
+
                 while (true) {
                     try {
-                        Content content = Helper.deserializeContent(ois);//чтение
+                        Content content = Helper.deserializeContent(fis);//чтение
                         result.add(content);
                     } catch (EOFException e) {
                         break;
@@ -378,7 +372,7 @@ public class AppContent extends JFrame {
                     }
                 }
             }
-        }
+
         return result;
     }
 
@@ -404,7 +398,6 @@ public class AppContent extends JFrame {
     private void autoFillDatabase() {
         contentDatabase.clear();
 
-        // Создаем полный набор тестовых данных
         Content v1 = Helper.createInstance();
         Content v2 = Helper.createInstance("Тестирование", new int[]{10, 20, 30}, 4);
         Content v3 = new Serial("Test", new int[]{1,2,3}, 4);
@@ -428,7 +421,7 @@ public class AppContent extends JFrame {
         int[] array5 = new int[]{2,4,1,5,12,7,2,8,9,11,21,11,13};
         Content c5 = new Serial("Comparable5", array5, 1);
 
-        int[] array6 = new int[]{3,3,3};
+        int[] array6 = new int[3];
         Content c6 = new Serial("Comparable6", array6, 5);
 
         contentDatabase.add(v1);
